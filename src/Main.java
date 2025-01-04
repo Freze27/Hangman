@@ -1,3 +1,4 @@
+import java.io.*;
 import java.util.*;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
@@ -144,6 +145,31 @@ public class Main {
     }
 
     private static String GetRandomWord() {
-        return "будка";
+        Random random = new Random();
+        int lineIndex = random.nextInt(64);
+        String word = null;
+        BufferedReader reader = GetReader();
+        int currentLine = 0;
+        while (currentLine <= lineIndex) {
+            try {
+                word = reader.readLine();
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+            currentLine++;
+        }
+        return word;
+    }
+
+    private static BufferedReader GetReader() {
+        File file = new File("./src/words.txt");
+        try {
+            FileReader fileReader = new FileReader(file);
+            return new BufferedReader(fileReader);
+        } catch (FileNotFoundException exception) {
+            exception.printStackTrace();
+            throw new RuntimeException();
+        }
     }
 }
