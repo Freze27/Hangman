@@ -89,7 +89,7 @@ public class Main {
         Set<Character> uncorrectedSymbols = new HashSet<>();
         while (true) {
             char inputSymbol = InputSymbol();
-            if(!uncorrectedSymbols.contains(inputSymbol)){
+            if(!uncorrectedSymbols.contains(inputSymbol) & board.indexOf(inputSymbol) == -1){
                 String resultBoard = OpenSymbolInBoard(word, board, inputSymbol);
                 if (board.equals(resultBoard)) {
                     currentStage++;
@@ -165,7 +165,7 @@ public class Main {
     }
 
     private static BufferedReader GetReader() {
-        File file = new File("./src/words.txt");
+        File file = new File("./resources/words.txt");
         try {
             FileReader fileReader = new FileReader(file);
             return new BufferedReader(fileReader);
