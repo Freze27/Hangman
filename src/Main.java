@@ -86,30 +86,32 @@ public class Main {
         int currentStage = 0;
         String word = GetRandomWord();
         String board = "-".repeat(word.length());
-        ArrayList<Character> uncorrectedSymbols = new ArrayList<Character>();
+        Set<Character> uncorrectedSymbols = new HashSet<>();
         while (true) {
             char inputSymbol = InputSymbol();
-            String resultBoard = OpenSymbolInBoard(word, board, inputSymbol);
-            if (board.equals(resultBoard)) {
-                currentStage++;
-                uncorrectedSymbols.add(inputSymbol);
+            if(!uncorrectedSymbols.contains(inputSymbol)){
+                String resultBoard = OpenSymbolInBoard(word, board, inputSymbol);
+                if (board.equals(resultBoard)) {
+                    currentStage++;
+                    uncorrectedSymbols.add(inputSymbol);
+                }
+                board = resultBoard;
+                if (word.equals(board)) {
+                    System.out.println("Вы выиграли \uD83D\uDC4D");
+                    System.out.println(HANGMAN_STAGES.get(currentStage));
+                    System.out.println("Верное слово: " + word);
+                    System.out.println(" ");
+                    return;
+                }
+                if (currentStage == HANGMAN_STAGES.size() - 1) {
+                    System.out.println("Вы проиграли \uD83D\uDE2A");
+                    System.out.println(HANGMAN_STAGES.get(currentStage));
+                    System.out.println("Верное слово: " + word);
+                    System.out.println(" ");
+                    return;
+                }
+                OutputCurrentStage(board, currentStage, uncorrectedSymbols);
             }
-            board = resultBoard;
-            if (word.equals(board)) {
-                System.out.println("Вы выиграли \uD83D\uDC4D");
-                System.out.println(HANGMAN_STAGES.get(currentStage));
-                System.out.println("Верное слово: " + word);
-                System.out.println(" ");
-                return;
-            }
-            if (currentStage == HANGMAN_STAGES.size() - 1) {
-                System.out.println("Вы проиграли \uD83D\uDE2A");
-                System.out.println(HANGMAN_STAGES.get(currentStage));
-                System.out.println("Верное слово: " + word);
-                System.out.println(" ");
-                return;
-            }
-            OutputCurrentStage(board, currentStage, uncorrectedSymbols);
         }
     }
 
@@ -125,7 +127,7 @@ public class Main {
         }
     }
 
-    private static void OutputCurrentStage(String board, int currentStage, ArrayList<Character> uncorrectedSymbols) {
+    private static void OutputCurrentStage(String board, int currentStage, Set<Character> uncorrectedSymbols) {
         System.out.println(HANGMAN_STAGES.get(currentStage));
         System.out.println("Неверные буквы: " + uncorrectedSymbols);
         System.out.println("Слово: " + board);
